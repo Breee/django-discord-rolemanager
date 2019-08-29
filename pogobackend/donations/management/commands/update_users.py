@@ -6,8 +6,6 @@ from allauth.socialaccount.models import SocialAccount
 from datetime import datetime,timedelta
 from django.db.models import Q
 
-whitelist = ['Bree#2002']
-
 guild_to_roles = {
     409418083632152577 : [616562233475989514]
 }
