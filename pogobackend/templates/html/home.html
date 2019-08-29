@@ -1,0 +1,23 @@
+<!-- templates/home.html -->
+
+{% extends 'html/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Home{% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+
+{% block content %}
+
+{# Main Section #}
+<div class="mkt-s2 container">
+    <h2 class="mkt-s2-h">Your information</h2>
+    <div class="mkt-s2-body">
+        <ul class="list-group">
+            <li class="list-group-item">Balance: {{ user_information.balance }}€</li>
+            <li class="list-group-item">Last payment: {{ user_information.last_payment }}</li>
+        </ul>
+    </div>
+</div>
+
+
+{% endblock content %}

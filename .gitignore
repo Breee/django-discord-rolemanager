@@ -1,0 +1,10 @@
+
+pogobackend/venv/
+
+pogobackend/\.idea/
+
+pogobackend/db\.sqlite3
+
+pogobackend/pogobackend/settings\.py
+
+pogobackend/pogobackend/__pycache__/

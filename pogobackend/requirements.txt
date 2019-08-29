@@ -1,0 +1,4 @@
+django>=2.1.2
+django-allauth
+pexpect
+git+https://github.com/Rapptz/discord.py@master#egg=discord.py
