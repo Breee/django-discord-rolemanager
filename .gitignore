@@ -8,3 +8,7 @@ pogobackend/db\.sqlite3
 pogobackend/pogobackend/settings\.py
 
 pogobackend/pogobackend/__pycache__/
+
+pogobackend/donations/__pycache__/
+
+pogobackend/donations/migrations/__pycache__/

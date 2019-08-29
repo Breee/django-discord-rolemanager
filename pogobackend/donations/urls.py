@@ -19,7 +19,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='home'),
-    path('donations/update_users/', views.update_users, name='update_users')
+    #path('', views.index, name='home'),
+    path('', views.post_login, name='home'),
 ]
 
