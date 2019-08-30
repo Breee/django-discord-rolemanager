@@ -16,3 +16,5 @@ pogobackend/donations/migrations/__pycache__/
 docker-compose\.yml
 
 volumes/static/
+
+.idea/
