@@ -26,6 +26,7 @@ def index(request):
         context = {'user_information': user_information}
     return render(request, 'home.html', context)
 
+@login_required
 def post_login(request):
     return render(request, 'post_login.html')
 

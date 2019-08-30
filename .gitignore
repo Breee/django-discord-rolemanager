@@ -12,3 +12,5 @@ pogobackend/pogobackend/__pycache__/
 pogobackend/donations/__pycache__/
 
 pogobackend/donations/migrations/__pycache__/
+
+docker-compose\.yml

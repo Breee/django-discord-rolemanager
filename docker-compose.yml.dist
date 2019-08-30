@@ -1,0 +1,46 @@
+version: '2.4'
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./volumes/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./volumes/static:/usr/share/nginx/static
+    depends_on:
+      - app
+    ports:
+      - "8000:80"
+    restart: always
+    networks:
+      - proxy
+      - default
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.basic.frontend.rule=Host:bla.host.com
+      - traefik.basic.port=80
+      - com.centurylinklabs.watchtower.enable=true
+
+  app:
+    build:
+      context: ""
+      dockerfile: Dockerfile
+    volumes:
+      - ./volumes/static:/usr/src/app/pogobackend/static
+    restart: always
+    depends_on:
+      - db
+
+  # PostgreSQL database for Django
+  db:
+    image: postgres
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=StrongPassword
+      - POSTGRES_DB=postgres
+    restart: always
+
+networks:
+  proxy:
+    external: true
