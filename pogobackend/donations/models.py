@@ -1,16 +1,47 @@
 from django.db import models
 from allauth.socialaccount.models import SocialAccount
-from datetime import datetime
 from django.utils.timezone import now
 
-class Donation(models.Model):
-    user = models.ForeignKey(SocialAccount, on_delete=models.CASCADE,blank=True, null=True)
+class Donator(models.Model):
+    user = models.ForeignKey(SocialAccount, on_delete=models.CASCADE)
     balance = models.FloatField(default=0.0)
     fee = models.FloatField(default=0.0)
     precious = models.BooleanField(default=False)
     last_payment = models.DateTimeField(default=now)
+    first_payment = models.DateTimeField(default=now)
     monthly_paid = models.BooleanField(default=False)
+    days_until_payment = models.IntegerField(default=30)
+
+    def __str__(self):
+        return f"{self.user.extra_data['username']}#{self.user.extra_data['discriminator']}"
+
+class Donation(models.Model):
+    donator = models.ForeignKey(Donator, on_delete=models.CASCADE)
+    amount = models.FloatField(default=0.0)
+
+class DiscordGuild(models.Model):
+    guild_id = models.IntegerField(db_index=True)
+    guild_name = models.CharField(max_length=128, blank=True, null=True, default='Unknown')
+
+    def __str__(self):
+        return f'{self.guild_name} - {self.guild_id}'
+
+class DiscordRole(models.Model):
+    role_id = models.IntegerField()
+    role_name = models.CharField(max_length=128, blank=True,null=True, default='donator')
+
+    def __str__(self):
+        return f'{self.role_name} - {self.role_id}'
+
+class GuildToRoleRelation(models.Model):
+    guild = models.ForeignKey(DiscordGuild, on_delete=models.CASCADE)
+    role = models.ForeignKey(DiscordRole, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.guild.guild_name} - {self.role.role_name}'
 
 class AllowedDiscordServer(models.Model):
-    server_id = models.CharField(db_index=True, max_length=128)
-    name = models.CharField(max_length=128, default=None, blank=True, null=True)
+    guild = models.ForeignKey(DiscordGuild, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.guild.guild_name}'
