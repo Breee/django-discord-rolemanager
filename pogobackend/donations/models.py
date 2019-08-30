@@ -20,14 +20,14 @@ class Donation(models.Model):
     amount = models.FloatField(default=0.0)
 
 class DiscordGuild(models.Model):
-    guild_id = models.IntegerField(db_index=True)
+    guild_id = models.BigIntegerField(db_index=True)
     guild_name = models.CharField(max_length=128, blank=True, null=True, default='Unknown')
 
     def __str__(self):
         return f'{self.guild_name} - {self.guild_id}'
 
 class DiscordRole(models.Model):
-    role_id = models.IntegerField()
+    role_id = models.BigIntegerField()
     role_name = models.CharField(max_length=128, blank=True,null=True, default='donator')
 
     def __str__(self):
