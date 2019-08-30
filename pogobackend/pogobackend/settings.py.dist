@@ -148,4 +148,5 @@ STATIC_URL = '/static/'
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 BOT_TOKEN = 'sdfsdfdsfdsfdsfdsfdsfsdfsdfdsfdsf'
