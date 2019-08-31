@@ -28,5 +28,5 @@ class Command(BaseCommand):
         for id,amount in id_to_amount.items():
             user = SocialAccount.objects.all().filter(uid=str(id)).first()
             if user:
-                donator = Donator(user=user, balance=amount, fee=2.0, monthly_paid=False, days_until_payment=1)
+                donator, created = Donator.objects.update_or_create(user=user, defaults={'balance':amount, 'fee':2.0, 'monthly_paid':False, 'days_until_payment':1})
                 donator.save()
