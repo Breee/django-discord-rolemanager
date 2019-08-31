@@ -3,7 +3,7 @@ from allauth.socialaccount.models import SocialAccount
 from django.utils.timezone import now
 
 class Donator(models.Model):
-    user = models.ForeignKey(SocialAccount, on_delete=models.CASCADE)
+    user = models.ForeignKey(SocialAccount, on_delete=models.CASCADE, unique=True)
     balance = models.FloatField(default=0.0)
     fee = models.FloatField(default=0.0)
     precious = models.BooleanField(default=False)
@@ -18,6 +18,9 @@ class Donator(models.Model):
 class Donation(models.Model):
     donator = models.ForeignKey(Donator, on_delete=models.CASCADE)
     amount = models.FloatField(default=0.0)
+    completed = models.BooleanField(default=False)
+    note = models.CharField(max_length=128, default="")
+    date = models.DateTimeField(default=now)
 
 class DiscordGuild(models.Model):
     guild_id = models.BigIntegerField(db_index=True)

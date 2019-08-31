@@ -22,9 +22,6 @@ class Command(BaseCommand):
                 guild_to_roles[obj.guild.guild_id].append(obj.role.role_id)
         discord_members = []
         for mem in members:
-            if mem.extra_data:
-                extra_data = mem.extra_data
-                if 'username' in extra_data and 'discriminator' in extra_data:
-                    discord_members.append(f"{mem.extra_data['username']}#{mem.extra_data['discriminator']}")
+            discord_members.append(int(mem.uid))
         bot = RoleBot(guild_to_roles=guild_to_roles, members=discord_members)
         bot.run(BOT_TOKEN)

@@ -36,15 +36,15 @@ class RoleBot(commands.Bot):
                 if self.guild_to_roles is not None:
                     roles = [guild.get_role(role_id) for role_id in self.guild_to_roles[guild.id]]
                 async for member in guild.fetch_members(limit=10000):
-                    username = f'{member.name}#{member.discriminator}'
                     if self.mode == BotMode.UPDATE:
-                        if self.members is not None and username in self.members:
+                        # if the id is in our memberlist, we give him the desired roles.
+                        if self.members is not None and member.id in self.members:
                             await member.add_roles(*roles)
-                            print(f'gave {username}, roles {roles}')
+                            print(f'gave {member.name}, roles {roles}')
                         else:
                             await member.remove_roles(*roles)
-                            print(f'took {username}, roles {roles}')
+                            print(f'took {member.name}, roles {roles}')
                     elif self.mode == BotMode.FETCH_IDS:
-                        self.username_to_id[username.encode('ascii', 'ignore').decode("utf-8").lower()] = member.id
+                        self.username_to_id[member.name.encode('ascii', 'ignore').decode("utf-8").lower()] = member.id
         await self.session.close()
         await self.logout()
