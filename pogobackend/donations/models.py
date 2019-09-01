@@ -4,6 +4,8 @@ from django.utils.timezone import now
 
 class Donator(models.Model):
     user = models.ForeignKey(SocialAccount, on_delete=models.CASCADE, unique=True)
+    balance = models.FloatField(default=0.0)
+    paid = models.IntegerField(default=0.0)
     fee = models.FloatField(default=2.0)
     precious = models.BooleanField(default=False)
     last_payment = models.DateTimeField(default=now)
@@ -12,7 +14,7 @@ class Donator(models.Model):
     days_until_payment = models.IntegerField(default=30)
 
     def __str__(self):
-        return f"{self.user.extra_data['username']}#{self.user.extra_data['discriminator']}"
+        return f"{self.user.extra_data['username']}#{self.user.extra_data['discriminator']} - {self.balance}"
 
 class Donation(models.Model):
     donator = models.ForeignKey(Donator, on_delete=models.CASCADE)
