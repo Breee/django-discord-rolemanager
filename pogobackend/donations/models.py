@@ -21,6 +21,8 @@ class Donation(models.Model):
     completed = models.BooleanField(default=False)
     note = models.CharField(max_length=128, default="")
     date = models.DateTimeField(default=now)
+    def __str__(self):
+        return f"{self.donator.user.extra_data['username']}#{self.donator.user.extra_data['discriminator']} [amount: {self.amount}] [completed: {self.completed}]"
 
 class DiscordGuild(models.Model):
     guild_id = models.BigIntegerField(db_index=True)
