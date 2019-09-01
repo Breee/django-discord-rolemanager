@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from pogobackend.settings import BOT_TOKEN
 from donations.bot import RoleBot
-from donations.models import Donator
+from donations.models import Donator, Donation
 from allauth.socialaccount.models import SocialAccount
 
 class Command(BaseCommand):
@@ -28,5 +28,7 @@ class Command(BaseCommand):
         for id,amount in id_to_amount.items():
             user = SocialAccount.objects.all().filter(uid=str(id)).first()
             if user:
-                donator, created = Donator.objects.update_or_create(user=user, defaults={'balance':amount, 'fee':2.0, 'monthly_paid':False, 'days_until_payment':1})
+                donator, created = Donator.objects.update_or_create(user=user)
                 donator.save()
+                donation = Donation(donator=donator, amount=amount, note="initial donation", completed=True)
+                donation.save()
