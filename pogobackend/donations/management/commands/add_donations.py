@@ -30,5 +30,5 @@ class Command(BaseCommand):
             if user:
                 donator, created = Donator.objects.update_or_create(user=user)
                 donator.save()
-                donation = Donation(donator=donator, amount=amount, note="initial donation", completed=True)
+                donation = Donation.objects.update_or_create(donator=donator, amount=amount, note="initial donation", completed=True)
                 donation.save()
