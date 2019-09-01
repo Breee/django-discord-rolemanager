@@ -4,8 +4,7 @@ from django.utils.timezone import now
 
 class Donator(models.Model):
     user = models.ForeignKey(SocialAccount, on_delete=models.CASCADE, unique=True)
-    balance = models.FloatField(default=0.0)
-    fee = models.FloatField(default=0.0)
+    fee = models.FloatField(default=2.0)
     precious = models.BooleanField(default=False)
     last_payment = models.DateTimeField(default=now)
     first_payment = models.DateTimeField(default=now)
