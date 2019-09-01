@@ -21,7 +21,7 @@ def index(request):
             name = social_accounts.user.username
         try:
             donator = Donator.objects.get(user=social_accounts)
-            balance = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))['amount__sum']
+            balance = donator.balance
             pending = Donation.objects.filter(donator=donator, completed=False).aggregate(Sum('amount'))['amount__sum']
             last_payment = donator.last_payment
             first_payment = donator.first_payment
