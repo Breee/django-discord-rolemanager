@@ -4,13 +4,13 @@ from django.shortcuts import render
 from donations.models import Donator, Donation
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Sum
 
 @login_required
 def index(request):
     if request.user.is_superuser:
         social_accounts = SocialAccount.objects.all()
-        donation_queryset = Donator.objects.all()
+        donator_queryset = Donator.objects.all()
         context = {'user_information': ""}
     else:
         social_accounts = SocialAccount.objects.get(user=request.user)
@@ -20,12 +20,12 @@ def index(request):
         else:
             name = social_accounts.user.username
         try:
-            donation_queryset = Donator.objects.get(user=social_accounts)
-            balance = donation_queryset.balance
-            last_payment = donation_queryset.last_payment
-            first_payment = donation_queryset.first_payment
-            monthly_paid = donation_queryset.monthly_paid
-            days_until_payment = donation_queryset.days_until_payment
+            donator = Donator.objects.get(user=social_accounts)
+            balance = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))['amount__sum']
+            last_payment = donator.last_payment
+            first_payment = donator.first_payment
+            monthly_paid = donator.monthly_paid
+            days_until_payment = donator.days_until_payment
         except Donator.DoesNotExist:
             balance = 0
             last_payment = "never"
