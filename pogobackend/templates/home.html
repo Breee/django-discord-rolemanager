@@ -9,17 +9,24 @@
 {% block content %}
 
 {# Main Section #}
-<div class="mkt-s2 container">
-    <h2 class="mkt-s2-h">Your information</h2>
-    <div class="mkt-s2-body">
-        <ul class="list-group">
-            <li class="list-group-item">Name: {{ user_information.name }}</li>
-            <li class="list-group-item">Balance: {{ user_information.balance }}€</li>
-            <li class="list-group-item">Last payment: {{ user_information.last_payment }}</li>
-            <li class="list-group-item">First payment: {{ user_information.first_payment }}</li>
-            <li class="list-group-item">Paid this month: {{ user_information.monthly_paid }}</li>
-            <li class="list-group-item">Days until next payment: {{ user_information.days_until_payment }}</li>
-        </ul>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="card bg-light mb-3" style="max-width: 20rem;">
+            <div class="card-body">
+                <h5 class="card-title">Your Information</h5>
+                <p class="card-text">
+                <ul class="list-group">
+                    <li class="list-group-item">Name: {{ user_information.name }}</li>
+                    <li class="list-group-item">Balance: {{ user_information.balance }}€</li>
+                    <li class="list-group-item">Last payment: {{ user_information.last_payment }}</li>
+                    <li class="list-group-item">First payment: {{ user_information.first_payment }}</li>
+                    <li class="list-group-item">Paid this month: {{ user_information.monthly_paid }}</li>
+                    <li class="list-group-item">Days until next payment: {{ user_information.days_until_payment }}
+                    </li>
+                </ul>
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 

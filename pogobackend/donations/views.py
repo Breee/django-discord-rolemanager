@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from donations.models import Donator
+from donations.models import Donator, Donation
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.decorators import login_required
 
@@ -41,3 +41,33 @@ def index(request):
 def post_login(request):
     return render(request, 'post_login.html')
 
+
+from .forms import DonateForm
+from django.http import HttpResponseRedirect
+
+def donate(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = DonateForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            social_account = SocialAccount.objects.get(user=request.user)
+            donator, created = Donator.objects.update_or_create(user=social_account)
+            donator.save()
+            donation = Donation(donator=donator, amount=form.cleaned_data['amount'], note=form.cleaned_data['note'])
+            donation.save()
+            return HttpResponseRedirect('/donate/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        if request.user.is_superuser:
+            form = DonateForm()
+            donations = Donation.objects.all()
+        else:
+            form = DonateForm()
+            social_account = SocialAccount.objects.get(user=request.user)
+            donations = Donation.objects.filter(donator__user=social_account)
+
+    return render(request, 'donation.html', {'form': form, 'donations': donations})
