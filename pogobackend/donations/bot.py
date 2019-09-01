@@ -46,6 +46,6 @@ class RoleBot(commands.Bot):
                             print(f'took {member.name}, roles {roles}')
                     elif self.mode == BotMode.FETCH_IDS:
                         username = f'{member.name}#{member.discriminator}'
-                        self.username_to_id[username.encode('ascii', 'ignore').decode("utf-8").lower()] = member.id
+                        self.username_to_id[username.replace(' ','').encode('ascii', 'ignore').decode("utf-8").lower()] = member.id
         await self.session.close()
         await self.logout()
