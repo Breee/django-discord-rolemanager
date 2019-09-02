@@ -14,14 +14,14 @@
         <div class="col-auto">
             <div class="card bg-light mb-3" style="max-width: 30rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Donate</h5>
+                    <h5 class="card-title">Spenden</h5>
                     <p class="card-text">
                     <form action="/donate/" method="post">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="amount">Amount</label>
+                            <label for="amount">Betrag</label>
                             {{form.amount}}
-                            <label for="amount">Note</label>
+                            <label for="amount">Kommentar</label>
                             {{form.note}}
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -38,10 +38,10 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Accepted</th>
-                    <th scope="col">Note</th>
+                    <th scope="col">Betrag</th>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Akzeptiert</th>
+                    <th scope="col">Kommentar</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
