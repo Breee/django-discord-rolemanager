@@ -25,6 +25,11 @@ class Donation(models.Model):
     def __str__(self):
         return f"{self.donator.user.extra_data['username']}#{self.donator.user.extra_data['discriminator']} [amount: {self.amount}] [completed: {self.completed}]"
 
+class RawDonation(models.Model):
+    username = models.CharField(max_length=128)
+    uid = models.CharField(max_length=128)
+    amount = models.FloatField(default=0.0)
+
 class DiscordGuild(models.Model):
     guild_id = models.BigIntegerField(db_index=True)
     guild_name = models.CharField(max_length=128, blank=True, null=True, default='Unknown')
@@ -51,3 +56,4 @@ class AllowedDiscordServer(models.Model):
 
     def __str__(self):
         return f'{self.guild.guild_name}'
+
