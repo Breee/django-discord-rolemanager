@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from pogobackend.settings import MAINTENANCE
 
 urlpatterns = [
-    path('', views.index, name='home'),
+    path('', views.index if not MAINTENANCE else views.post_login , name='home'),
     path('donate/', views.donate, name='donate'),
-    #path('', views.post_login, name='home'),
 ]
 
