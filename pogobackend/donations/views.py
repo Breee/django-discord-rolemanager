@@ -22,6 +22,8 @@ def index(request):
         try:
             donator = Donator.objects.get(user=social_accounts)
             balance = donator.balance
+            paid = donator.paid
+            accepted = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))['amount__sum']
             pending = Donation.objects.filter(donator=donator, completed=False).aggregate(Sum('amount'))['amount__sum']
             last_payment = donator.last_payment
             first_payment = donator.first_payment
@@ -30,12 +32,14 @@ def index(request):
         except Donator.DoesNotExist:
             balance = 0
             pending = 0
+            paid=0
+            accepted=0
             last_payment = "never"
             first_payment = "never"
             monthly_paid = False
             days_until_payment = "never"
 
-        user_information = {'name':name, 'balance': balance, 'pending': pending if pending is not None else 0, 'last_payment': last_payment, 'first_payment': first_payment, 'monthly_paid': monthly_paid, 'days_until_payment':days_until_payment}
+        user_information = {'name':name, 'balance': balance, 'paid': paid, 'accepted': accepted if accepted is not None else 0, 'pending': pending if pending is not None else 0, 'last_payment': last_payment, 'first_payment': first_payment, 'monthly_paid': monthly_paid, 'days_until_payment':days_until_payment}
         context = {'user_information': user_information}
     return render(request, 'home.html', context)
 
