@@ -41,6 +41,10 @@ services:
       - POSTGRES_DB=postgres
     restart: always
 
+  # Redis for Celery
+  redis:
+    image: "redis:alpine"
+
 networks:
   proxy:
     external: true

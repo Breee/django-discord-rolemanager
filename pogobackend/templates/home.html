@@ -22,10 +22,35 @@
                     <li class="list-group-item">Noch nicht bestätigte Spenden: {{ user_information.pending }}€</li>
                     <li class="list-group-item">Bisher Abgebucht: {{ user_information.paid }}€</li>
                     <li class="list-group-item">Letzte Abbuchung: {{ user_information.last_payment }}</li>
-                    <li class="list-group-item">Tage bis zur nächsten Abbuchung: {{ user_information.days_until_payment}}
+                    <li class="list-group-item">Tage bis zur nächsten Abbuchung:
+                        {{user_information.days_until_payment}}
                     </li>
                 </ul>
                 </p>
+                {% if user_information.monthly_paid %}
+                <div class="alert alert-success" role="alert">
+                    Du hast diesen Monat bezahlt!
+                </div>
+                {% else %}
+                <form action="/pay/" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Für diesen Monat bezahlen!</button>
+                </form>
+                {% endif %}
+                <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% if user_information.autopay %}
+                        <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay"
+                                                    checked>Automatisch
+                            Bezahlen</label><br>
+                        {% else %}
+                        <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay">Automatisch
+                            Bezahlen</label><br>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Speichern</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

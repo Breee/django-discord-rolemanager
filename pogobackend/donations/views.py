@@ -5,51 +5,77 @@ from donations.models import Donator, Donation
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+from .forms import DonateForm, SettingsForm
+from django.http import HttpResponseRedirect
 
 @login_required
 def index(request):
-    if request.user.is_superuser:
-        social_accounts = SocialAccount.objects.all()
-        donator_queryset = Donator.objects.all()
-        context = {'user_information': ""}
-    else:
-        social_accounts = SocialAccount.objects.get(user=request.user)
-        if social_accounts.provider == 'discord':
-            name = f'{social_accounts.extra_data["username"]}#' \
-                   f'{social_accounts.extra_data["discriminator"]}'
-        else:
-            name = social_accounts.user.username
-        try:
-            donator = Donator.objects.get(user=social_accounts)
-            balance = donator.balance
-            paid = donator.paid
-            accepted = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))['amount__sum']
-            pending = Donation.objects.filter(donator=donator, completed=False).aggregate(Sum('amount'))['amount__sum']
-            last_payment = donator.last_payment
-            first_payment = donator.first_payment
-            monthly_paid = donator.monthly_paid
-            days_until_payment = donator.days_until_payment
-        except Donator.DoesNotExist:
-            balance = 0
-            pending = 0
-            paid=0
-            accepted=0
-            last_payment = "never"
-            first_payment = "never"
-            monthly_paid = False
-            days_until_payment = "never"
 
-        user_information = {'name':name, 'balance': balance, 'paid': paid, 'accepted': accepted if accepted is not None else 0, 'pending': pending if pending is not None else 0, 'last_payment': last_payment, 'first_payment': first_payment, 'monthly_paid': monthly_paid, 'days_until_payment':days_until_payment}
-        context = {'user_information': user_information}
-    return render(request, 'home.html', context)
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = SettingsForm(request.POST or None)
+        if form.is_valid():
+            if request.POST["autopay"]:
+                social_accounts = SocialAccount.objects.get(user=request.user)
+                try:
+                    donator = Donator.objects.get(user=social_accounts)
+                    donator.autopay = True
+                    donator.save()
+                except Donator.DoesNotExist:
+                    print(f"Donator for {request.user} does not exists.")
+        return HttpResponseRedirect('/')
+    else:
+        if request.user.is_superuser:
+            social_accounts = SocialAccount.objects.all()
+            donator_queryset = Donator.objects.all()
+            context = {'user_information': ""}
+        else:
+            social_accounts = SocialAccount.objects.get(user=request.user)
+            if social_accounts.provider == 'discord':
+                name = f'{social_accounts.extra_data["username"]}#' \
+                       f'{social_accounts.extra_data["discriminator"]}'
+            else:
+                name = social_accounts.user.username
+            try:
+                donator = Donator.objects.get(user=social_accounts)
+                balance = donator.balance
+                paid = donator.paid
+                accepted = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))[
+                    'amount__sum']
+                pending = Donation.objects.filter(donator=donator, completed=False).aggregate(Sum('amount'))[
+                    'amount__sum']
+                last_payment = donator.last_payment
+                first_payment = donator.first_payment
+                monthly_paid = donator.monthly_paid
+                days_until_payment = donator.days_until_payment
+                autopay = donator.autopay
+                settings_form = SettingsForm()
+            except Donator.DoesNotExist:
+                balance = 0
+                pending = 0
+                paid = 0
+                accepted = 0
+                last_payment = "never"
+                first_payment = "never"
+                monthly_paid = False
+                days_until_payment = "never"
+                autopay = False
+
+            user_information = {'name':               name, 'balance': balance, 'paid': paid,
+                                'accepted':           accepted if accepted is not None else 0,
+                                'pending':            pending if pending is not None else 0,
+                                'last_payment':       last_payment, 'first_payment': first_payment,
+                                'monthly_paid':       monthly_paid, 'days_until_payment': days_until_payment,
+                                'settings_form':      settings_form,
+                                'autopay': autopay
+                                }
+            context = {'user_information': user_information}
+        return render(request, 'home.html', context)
 
 @login_required
 def post_login(request):
     return render(request, 'post_login.html')
 
-
-from .forms import DonateForm
-from django.http import HttpResponseRedirect
 
 def donate(request):
     # if this is a POST request we need to process the form data
