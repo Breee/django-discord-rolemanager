@@ -22,5 +22,6 @@ from pogobackend.settings import MAINTENANCE
 urlpatterns = [
     path('', views.index if not MAINTENANCE else views.post_login , name='home'),
     path('donate/', views.donate, name='donate'),
+    path('pay/', views.pay, name='pay'),
 ]
 

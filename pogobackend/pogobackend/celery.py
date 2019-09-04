@@ -32,8 +32,11 @@ def subtract_day():
     call_command('subtract_day')
 
 @app.task(name='subtract_fee')
-def subtract_fee():
-    call_command('subtract_fee', '--pay', '--days', '--month')
+def subtract_fee(user_id=None):
+    if user_id:
+        call_command('subtract_fee', '--pay', '--days', '--month', f'--user={user_id}')
+    else:
+        call_command('subtract_fee', '--pay', '--days', '--month')
 
 @app.task(bind=True)
 def debug_task(self):

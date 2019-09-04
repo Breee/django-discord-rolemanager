@@ -60,5 +60,4 @@ class RoleBot(commands.Bot):
                             username = f'{member.name}#{member.discriminator}'
                             self.username_to_id[
                                 username.replace(' ', '').encode('ascii', 'ignore').decode("utf-8").lower()] = member.id
-            await self.session.close()
-            await self.logout()
+        await self.logout()

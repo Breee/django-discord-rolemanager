@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from .forms import DonateForm, SettingsForm
 from django.http import HttpResponseRedirect
+from pogobackend.celery import subtract_fee
 
 @login_required
 def index(request):
@@ -103,3 +104,11 @@ def donate(request):
             donations = Donation.objects.filter(donator__user=social_account)
 
     return render(request, 'donation.html', {'form': form, 'donations': donations})
+
+
+@login_required
+def pay(request):
+    if request.method == 'POST':
+        social_account = SocialAccount.objects.get(user=request.user)
+        subtract_fee.delay(social_account.user_id)
+        return HttpResponseRedirect('/')
