@@ -11,18 +11,18 @@ from pogobackend.celery import subtract_fee
 
 @login_required
 def index(request):
-
+    settings_form = SettingsForm()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = SettingsForm(request.POST or None)
         if form.is_valid():
-            if request.POST["autopay"]:
-                social_accounts = SocialAccount.objects.get(user=request.user)
+            if "autopay" in request.POST and request.POST["autopay"]:
                 try:
+                    social_accounts = SocialAccount.objects.get(user=request.user)
                     donator = Donator.objects.get(user=social_accounts)
                     donator.autopay = True
                     donator.save()
-                except Donator.DoesNotExist:
+                except Donator.DoesNotExist or SocialAccount.DoesNotExist:
                     print(f"Donator for {request.user} does not exists.")
         return HttpResponseRedirect('/')
     else:
@@ -50,7 +50,6 @@ def index(request):
                 monthly_paid = donator.monthly_paid
                 days_until_payment = donator.days_until_payment
                 autopay = donator.autopay
-                settings_form = SettingsForm()
             except Donator.DoesNotExist:
                 balance = 0
                 pending = 0
