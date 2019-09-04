@@ -11,9 +11,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'home' %}">Übersicht <span class="sr-only">(current)</span></a>
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'donate' %}">Spenden</a>
             </li>
+            {% endif %}
         </ul>
         <span class="navbar-text">
       {% if user.is_authenticated %}
