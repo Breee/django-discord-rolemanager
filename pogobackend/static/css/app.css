@@ -11,3 +11,7 @@ body {
 .footer {
   flex-shrink: 0;
 }
+
+.donationtable{
+  padding-bottom: 30px;
+}
