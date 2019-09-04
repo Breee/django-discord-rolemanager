@@ -8,53 +8,56 @@
 
 {% block content %}
 
-{# Main Section #}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="card bg-light mb-3" style="max-width: 40rem;">
-            <div class="card-body">
-                <h5 class="card-title">Übersicht:</h5>
-                <p class="card-text">
-                <ul class="list-group">
-                    <li class="list-group-item">Name: {{ user_information.name }}</li>
-                    <li class="list-group-item">Aktuelle Bilanz: {{ user_information.balance }}€</li>
-                    <li class="list-group-item">Bestätigte Spenden: {{ user_information.accepted }}€</li>
-                    <li class="list-group-item">Noch nicht bestätigte Spenden: {{ user_information.pending }}€</li>
-                    <li class="list-group-item">Bisher Abgebucht: {{ user_information.paid }}€</li>
-                    <li class="list-group-item">Letzte Abbuchung: {{ user_information.last_payment }}</li>
-                    <li class="list-group-item">Tage bis zur nächsten Abbuchung:
-                        {{user_information.days_until_payment}}
-                    </li>
-                </ul>
-                </p>
-                {% if user_information.monthly_paid %}
-                <div class="alert alert-success" role="alert">
-                    Du hast diesen Monat bezahlt!
-                </div>
-                {% else %}
-                <form action="/pay/" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Für diesen Monat bezahlen!</button>
-                </form>
-                {% endif %}
-                <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        {% if user_information.autopay %}
-                        <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay"
-                                                    checked>Automatisch
-                            Bezahlen</label><br>
-                        {% else %}
-                        <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay">Automatisch
-                            Bezahlen</label><br>
+    {# Main Section #}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="card bg-light mb-3" style="max-width: 40rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Übersicht:</h5>
+                    <p class="card-text">
+                    <ul class="list-group">
+                        <li class="list-group-item">Name: {{ user_information.name }}</li>
+                        <li class="list-group-item">Aktuelle Bilanz: {{ user_information.balance }}€</li>
+                        <li class="list-group-item">Bestätigte Spenden: {{ user_information.accepted }}€</li>
+                        <li class="list-group-item">Noch nicht bestätigte Spenden: {{ user_information.pending }}€</li>
+                        <li class="list-group-item">Bisher Abgebucht: {{ user_information.paid }}€</li>
+                        <li class="list-group-item">Letzte Abbuchung: {{ user_information.last_payment }}</li>
+                        <li class="list-group-item">Tage bis zur nächsten Abbuchung:
+                            {{ user_information.days_until_payment }}
+                        </li>
+                    </ul>
+                    </p>
+                    {% if user_information.monthly_paid %}
+                        <div class="alert alert-success" role="alert">
+                            Du hast diesen Monat bezahlt!
+                        </div>
+                    {% else %}
+                        {% if user_information.balance > 0 %}
+                            <form action="/pay/" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Für diesen Monat bezahlen!</button>
+                            </form>
                         {% endif %}
-                        <button type="submit" class="btn btn-primary">Speichern</button>
-                    </form>
+                    {% endif %}
+                    <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
+                    
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {% if user_information.autopay %}
+                                <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay"
+                                                            checked>Automatisch
+                                    Bezahlen</label><br>
+                            {% else %}
+                                <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay">Automatisch
+                                    Bezahlen</label><br>
+                            {% endif %}
+                            <button type="submit" class="btn btn-primary">Speichern</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 {% endblock content %}
