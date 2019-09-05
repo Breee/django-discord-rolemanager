@@ -14,7 +14,7 @@ class Command(BaseCommand):
         parser.add_argument('user_ids', nargs='+')
 
     def handle(self, *args, **kwargs):
-        user_ids = kwargs.get('user_ids')
+        user_ids = kwargs.get('user_ids').split(' ')
         user_ids_int = [int(x) for x in user_ids]
         # get donators and partition into donators and no donators.
         give_roles = Donator.objects.filter((Q(monthly_paid=True) | Q(precious=True)) & Q(user__uid__in=user_ids)).values_list('user__uid',flat=True)
