@@ -18,16 +18,16 @@ def update_donation(sender, **kwargs):
     donator = donation.donator
     summed_donations = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))['amount__sum']
     balance = (summed_donations if summed_donations is not None else 0) - donator.paid
-    Donator.objects.filter(user=donator.user).update(balance=balance, last_payment=timezone.now())
-    update_user.delay(donator.user.uid)
+    Donator.objects.filter(user=donator.user).update(balance=balance, last_payment=timezone.now(), last_change=timezone.now())
+    if donation.completed:
+        Donator.objects.filter(user=donator.user).update(updated=False)
 
 @receiver(post_save, sender=Donator, dispatch_uid="update_donator")
 def update_donator(sender, **kwargs):
     donator = kwargs.get('instance')
     summed_donations = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))['amount__sum']
     balance = (summed_donations if summed_donations is not None else 0) - donator.paid
-    Donator.objects.filter(user=donator.user).update(balance=balance)
-    update_user.delay(donator.user.uid)
+    Donator.objects.filter(user=donator.user).update(balance=balance, last_change=timezone.now(), updated=False)
 
 @receiver(user_signed_up)
 def user_signed_up(sender, **kwargs):

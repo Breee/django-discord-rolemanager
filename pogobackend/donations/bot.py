@@ -13,7 +13,6 @@ class RoleBot(commands.Bot):
     def __init__(self, guild_to_roles=None, members=None, username_to_id=None, update_single_member=None, loop=None):
         super().__init__(command_prefix=["/"], description="", pm_help=None,
                          help_attrs=dict(hidden=True), loop=loop)
-        #self.session = aiohttp.ClientSession(loop=self.loop)
         self.guild_to_roles = guild_to_roles
         self.give_roles = members['give_roles']
         self.take_roles = members['take_roles']

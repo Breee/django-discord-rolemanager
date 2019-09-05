@@ -15,6 +15,7 @@ class Donator(models.Model):
     first_payment = models.DateTimeField(default=now)
     last_change = models.DateTimeField(default=now)
     last_update = models.DateTimeField(default=now)
+    updated = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.extra_data['username']}#{self.user.extra_data['discriminator']} - {self.balance}"
