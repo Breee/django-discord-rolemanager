@@ -18,3 +18,13 @@ docker-compose\.yml
 volumes/static/
 
 .idea/
+
+pogobackend/donations/management/__pycache__/
+
+pogobackend/donations/management/commands/__pycache__/
+
+pogobackend/donations/management/commands/data/
+
+pogobackend/celerybeat-schedule
+
+*.pid
