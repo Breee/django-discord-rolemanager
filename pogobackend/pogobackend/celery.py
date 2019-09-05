@@ -40,7 +40,7 @@ def update_users(self):
             user_ids = users.values_list('user__uid',flat=True)
             user_ids = [x for x in user_ids]
             Donator.objects.filter(user__uid__in=user_ids).update(last_update=timezone.now(),updated=True)
-            call_command('update_users', " ".join(user_ids))
+            call_command('update_users', *user_ids)
     except RuntimeError as e:
         print(e)
         self.retry(countdown=2, exc=e, max_retries=5)

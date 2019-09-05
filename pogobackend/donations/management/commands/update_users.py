@@ -11,10 +11,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         # Positional arguments are standalone name
-        parser.add_argument('user_ids', nargs='+')
+        parser.add_argument('user_ids', nargs='+', type=int)
 
     def handle(self, *args, **kwargs):
-        user_ids = kwargs.get('user_ids').split(' ')
+        user_ids = kwargs.get('user_ids')
+        print(user_ids)
+        print(type(user_ids))
         user_ids_int = [int(x) for x in user_ids]
         # get donators and partition into donators and no donators.
         give_roles = Donator.objects.filter((Q(monthly_paid=True) | Q(precious=True)) & Q(user__uid__in=user_ids)).values_list('user__uid',flat=True)
