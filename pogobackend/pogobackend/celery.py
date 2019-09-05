@@ -4,6 +4,10 @@ from celery import Celery
 from celery.schedules import crontab
 from django.conf import settings
 from django.core.management import call_command
+from datetime import datetime, timedelta
+import itertools
+
+
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pogobackend.settings')
@@ -26,6 +30,16 @@ def update_user(self, user_id):
         print(e)
         self.retry(countdown=2, exc=e, max_retries=5)
 
+@app.task(name='update_users_task', bind=True)
+def update_users(self):
+    from donations.models import Donator
+    try:
+        time_threshold = datetime.now() - timedelta(minutes=5)
+        user_ids = Donator.objects.filter(last_change__lte=time_threshold).values_list('user__uid',flat=True)
+        call_command('update_users', " ".join(user_ids))
+    except RuntimeError as e:
+        print(e)
+        self.retry(countdown=2, exc=e, max_retries=5)
 
 @app.task(name='subtract_day')
 def subtract_day():

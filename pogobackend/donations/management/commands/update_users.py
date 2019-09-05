@@ -8,10 +8,22 @@ from django.db.models import Q
 class Command(BaseCommand):
     help = 'update users'
 
+    def add_arguments(self, parser):
+        # Positional arguments are standalone name
+        parser.add_argument('user_ids', nargs='+')
+
     def handle(self, *args, **kwargs):
-        # get donators
-        donators = Donator.objects.filter(Q(monthly_paid=True) | Q(precious=True)).values_list('user__user_id',flat=True)
-        members = SocialAccount.objects.filter(user__in=donators)
+        user_ids = kwargs.get('user_ids')
+        print(user_ids)
+        user_ids_int = [int(x) for x in user_ids]
+        # get donators and partition into donators and no donators.
+        give_roles = Donator.objects.filter((Q(monthly_paid=True) | Q(precious=True)) & Q(user__uid__in=user_ids)).values_list('user__uid',flat=True)
+        # discord uid must be int since rewrite.
+        give_roles = [int(x) for x in give_roles]
+        take_roles = [int(x) for x in user_ids_int if x not in give_roles]
+        print(give_roles)
+        print(take_roles)
+
         # get guild_to_role mapping
         guild_to_roles = dict()
         donator_roles = GuildToRoleRelation.objects.all()
@@ -20,8 +32,9 @@ class Command(BaseCommand):
                 guild_to_roles[obj.guild.guild_id] = [obj.role.role_id]
             else:
                 guild_to_roles[obj.guild.guild_id].append(obj.role.role_id)
-        discord_members = []
-        for mem in members:
-            discord_members.append(int(mem.uid))
+        discord_members = {
+            'give_roles' : give_roles,
+            'take_roles' : take_roles
+        }
         bot = RoleBot(guild_to_roles=guild_to_roles, members=discord_members)
         bot.run(BOT_TOKEN)

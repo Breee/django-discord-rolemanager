@@ -15,10 +15,11 @@ class RoleBot(commands.Bot):
                          help_attrs=dict(hidden=True))
         self.session = aiohttp.ClientSession(loop=self.loop)
         self.guild_to_roles = guild_to_roles
-        self.members = members
+        self.give_roles = members['give_roles']
+        self.take_roles = members['take_roles']
         self.username_to_id = username_to_id
         self.update_single_member = update_single_member
-        if guild_to_roles is not None and (self.members is not None or self.update_single_member is not None):
+        if guild_to_roles is not None and (members is not None or self.update_single_member is not None):
             self.mode = BotMode.UPDATE
         elif username_to_id is not None:
             self.mode = BotMode.FETCH_IDS
@@ -38,26 +39,26 @@ class RoleBot(commands.Bot):
                     roles = [guild.get_role(role_id) for role_id in self.guild_to_roles[guild.id]]
 
                 if self.update_single_member:
-                    #await guild.fetch_members(limit=10000)
                     member = guild.get_member(int(self.update_single_member))
-                    if self.members is not None and member.id in self.members:
+                    if self.give_roles is not None and member.id in self.give_roles:
                         await member.add_roles(*roles)
                         print(f'gave {member.name}, roles {roles}')
-                    else:
+                    elif self.take_roles is not None and member.id in self.take_roles:
                         await member.remove_roles(*roles)
                         print(f'took {member.name}, roles {roles}')
                 else:
                     async for member in guild.fetch_members(limit=10000):
                         if self.mode == BotMode.UPDATE:
                             # if the id is in our memberlist, we give him the desired roles.
-                            if self.members is not None and member.id in self.members:
+                            if self.give_roles is not None and member.id in self.give_roles:
                                 await member.add_roles(*roles)
                                 print(f'gave {member.name}, roles {roles}')
-                            else:
+                            elif self.take_roles is not None and member.id in self.take_roles:
                                 await member.remove_roles(*roles)
                                 print(f'took {member.name}, roles {roles}')
                         elif self.mode == BotMode.FETCH_IDS:
                             username = f'{member.name}#{member.discriminator}'
                             self.username_to_id[
                                 username.replace(' ', '').encode('ascii', 'ignore').decode("utf-8").lower()] = member.id
+        await self.session.close()
         await self.logout()

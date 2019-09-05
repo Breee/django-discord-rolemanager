@@ -8,11 +8,13 @@ class Donator(models.Model):
     paid = models.IntegerField(default=0.0)
     fee = models.FloatField(default=2.0)
     precious = models.BooleanField(default=False)
+    monthly_paid = models.BooleanField(default=False)
+    autopay = models.BooleanField(default=False)
+    days_until_payment = models.IntegerField(default=0)
     last_payment = models.DateTimeField(default=now)
     first_payment = models.DateTimeField(default=now)
-    monthly_paid = models.BooleanField(default=False)
-    days_until_payment = models.IntegerField(default=0)
-    autopay = models.BooleanField(default=False)
+    last_change = models.DateTimeField(default=now)
+    last_update = models.DateTimeField(default=now)
 
     def __str__(self):
         return f"{self.user.extra_data['username']}#{self.user.extra_data['discriminator']} - {self.balance}"
@@ -57,4 +59,3 @@ class AllowedDiscordServer(models.Model):
 
     def __str__(self):
         return f'{self.guild.guild_name}'
-
