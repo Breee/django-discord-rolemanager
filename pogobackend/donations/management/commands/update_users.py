@@ -4,6 +4,7 @@ from donations.bot import RoleBot
 from donations.models import Donator, GuildToRoleRelation
 from allauth.socialaccount.models import SocialAccount
 from django.db.models import Q
+import asyncio
 
 class Command(BaseCommand):
     help = 'update users'
@@ -36,5 +37,6 @@ class Command(BaseCommand):
             'give_roles' : give_roles,
             'take_roles' : take_roles
         }
-        bot = RoleBot(guild_to_roles=guild_to_roles, members=discord_members)
+        loop = asyncio.new_event_loop()
+        bot = RoleBot(guild_to_roles=guild_to_roles, members=discord_members, loop=loop)
         bot.run(BOT_TOKEN)
