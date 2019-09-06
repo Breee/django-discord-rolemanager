@@ -27,19 +27,22 @@
                         </li>
                     </ul>
                     </p>
+                    <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
                     {% if user_information.monthly_paid %}
                         <div class="alert alert-success" role="alert">
                             Du hast diesen Monat bezahlt!
                         </div>
                     {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            Du hast diesen Monat noch nicht bezahlt!
+                        </div>
                         {% if user_information.balance > 0 %}
                             <form action="/pay/" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-primary">Für diesen Monat bezahlen!</button>
+                                <button type="submit" class="btn btn-dark">Für diesen Monat bezahlen</button>
                             </form>
                         {% endif %}
                     {% endif %}
-                    <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
                     
                         <form action="" method="post">
                             {% csrf_token %}
@@ -51,7 +54,7 @@
                                 <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay">Automatisch
                                     Bezahlen</label><br>
                             {% endif %}
-                            <button type="submit" class="btn btn-primary">Speichern</button>
+                            <button type="submit" class="btn btn-dark">Speichern</button>
                         </form>
                     </div>
                 </div>

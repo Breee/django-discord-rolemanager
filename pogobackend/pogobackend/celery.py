@@ -50,9 +50,9 @@ def subtract_day():
     call_command('subtract_day')
 
 @app.task(name='subtract_fee')
-def subtract_fee(user_id=None):
-    if user_id:
-        call_command('subtract_fee', '--pay', '--days', '--month', f'--user={user_id}')
+def subtract_fee(user_id=None, authorized=False):
+    if user_id and authorized:
+        call_command('subtract_fee', '--pay', '--days', '--month', '--authorized', f'--user={user_id}')
     else:
         call_command('subtract_fee', '--pay', '--days', '--month')
 

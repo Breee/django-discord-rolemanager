@@ -32,7 +32,6 @@ def update_donator(sender, **kwargs):
 @receiver(user_signed_up)
 def user_signed_up(sender, **kwargs):
     user = kwargs['user']
-    print(user)
     acc = SocialAccount.objects.get(user=user)
     raw_donation = RawDonation.objects.filter(uid=acc.uid).first()
     if raw_donation:

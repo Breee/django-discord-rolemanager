@@ -109,5 +109,5 @@ def donate(request):
 def pay(request):
     if request.method == 'POST':
         social_account = SocialAccount.objects.get(user=request.user)
-        subtract_fee.delay(social_account.user_id)
+        subtract_fee.delay(social_account.user_id, authorized=True)
         return HttpResponseRedirect('/')
