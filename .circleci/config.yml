@@ -5,10 +5,10 @@ jobs:
    steps:
      - checkout
      - run:
-       name: Store Version and Image name
-       command: |
-         echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
-         echo 'export IMAGE_NAME=django-role-manager' >> $BASH_ENV
+         name: Store Version and Image name
+         command: |
+           echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+           echo 'export IMAGE_NAME=django-role-manager' >> $BASH_ENV
      # with credentials stored in the UI
      - run: |
          echo "$USER" | docker login --username $PASSWORD --password-stdin
