@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-            docker build -t breedocker/$IMAGE_NAME:$TAG
+            docker build -t breedocker/$IMAGE_NAME:$TAG .
             echo $PASSWORD | docker login -u $USER --password-stdin
             docker push breedocker/$IMAGE_NAME:$TAG
               
