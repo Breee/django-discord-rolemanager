@@ -1,7 +1,5 @@
 jobs:
   build-and-push:
-    docker:
-      - image: circleci/python:3.7-alpine
     steps:
       - checkout
       - run:
