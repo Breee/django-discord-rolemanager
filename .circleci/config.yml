@@ -10,12 +10,8 @@ jobs:
            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
            echo 'export IMAGE_NAME=django-role-manager' >> $BASH_ENV
      # with credentials stored in the UI
-     - run: |
-         echo "$USER" | docker login --username $PASSWORD --password-stdin
-         docker run -d --name db company/proprietary-db:1.2.3
-
-     # build the application image
-     - run: docker build -t breedocker/$IMAGE_NAME:$TAG .
-     
-     # deploy the image
-     - run: docker push breedocker/$IMAGE_NAME:$TAG
+     - run:
+         command: |
+           docker build -t breedocker/$IMAGE_NAME:$TAG .
+           docker login -u $USER -p $PASSWORD
+           docker push breedocker/$IMAGE_NAME:$TAG
