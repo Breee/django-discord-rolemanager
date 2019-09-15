@@ -13,5 +13,5 @@ jobs:
      - run:
          command: |
            docker build -t breedocker/$IMAGE_NAME:$TAG .
-           docker login -u="$USER" -p="$PASSWORD"
+           docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
            docker push breedocker/$IMAGE_NAME:$TAG
