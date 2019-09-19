@@ -76,7 +76,7 @@ def index(request):
 def post_login(request):
     return render(request, 'post_login.html')
 
-
+@login_required
 def donate(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
