@@ -50,6 +50,7 @@ def index(request):
                 monthly_paid = donator.monthly_paid
                 days_until_payment = donator.days_until_payment
                 autopay = donator.autopay
+                precious = donator.precious
             except Donator.DoesNotExist:
                 balance = 0
                 pending = 0
@@ -60,6 +61,7 @@ def index(request):
                 monthly_paid = False
                 days_until_payment = "never"
                 autopay = False
+                precious = False
 
             user_information = {'name':               name, 'balance': balance, 'paid': paid,
                                 'accepted':           accepted if accepted is not None else 0,
@@ -67,7 +69,8 @@ def index(request):
                                 'last_payment':       last_payment, 'first_payment': first_payment,
                                 'monthly_paid':       monthly_paid, 'days_until_payment': days_until_payment,
                                 'settings_form':      settings_form,
-                                'autopay': autopay
+                                'autopay': autopay,
+                                'precious': precious
                                 }
             context = {'user_information': user_information}
         return render(request, 'home.html', context)

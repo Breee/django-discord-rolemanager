@@ -28,7 +28,11 @@
                     </ul>
                     </p>
                     <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
-                    {% if user_information.monthly_paid %}
+                        {% if user_information.precious %}
+                              <div class="alert alert-success" role="alert">
+                            Du hast bereits sehr viel für die Community getan, du hast automatisch Map/Channel Zugriff.
+                        </div>
+                    {% elif user_information.monthly_paid %}
                         <div class="alert alert-success" role="alert">
                             Du hast diesen Monat bezahlt!
                         </div>
@@ -43,7 +47,7 @@
                             </form>
                         {% endif %}
                     {% endif %}
-                    
+                        {% if not user_information.precious %}
                         <form action="" method="post">
                             {% csrf_token %}
                             {% if user_information.autopay %}
@@ -56,6 +60,8 @@
                             {% endif %}
                             <button type="submit" class="btn btn-dark">Speichern</button>
                         </form>
+                        {% endif %}
+                        <a class="btn btn-dark" href="{% url 'donate' %}">Spenden</a>
                     </div>
                 </div>
             </div>
