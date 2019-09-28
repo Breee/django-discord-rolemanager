@@ -30,11 +30,11 @@
                     <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
                         {% if user_information.precious %}
                               <div class="alert alert-success" role="alert">
-                            Du hast bereits sehr viel für die Community getan, du hast automatisch Map/Channel Zugriff.
+                            Du bist etwas ganz besonderes :3 Du hast automatisch Zugriff auf Map/Channel.
                         </div>
                     {% elif user_information.monthly_paid %}
                         <div class="alert alert-success" role="alert">
-                            Du hast diesen Monat bezahlt!
+                            Du hast für die nächsten 30 Tage bezahlt!
                         </div>
                     {% else %}
                         <div class="alert alert-danger" role="alert">
@@ -43,7 +43,7 @@
                         {% if user_information.balance > 0 %}
                             <form action="/pay/" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-dark">Für diesen Monat bezahlen</button>
+                                <button type="submit" class="btn btn-dark">Für die nächsten 30 Tage bezahlen</button>
                             </form>
                         {% endif %}
                     {% endif %}
