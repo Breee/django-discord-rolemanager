@@ -29,7 +29,34 @@ def index(request):
         if request.user.is_superuser:
             social_accounts = SocialAccount.objects.all()
             donator_queryset = Donator.objects.all()
-            context = {'user_information': ""}
+            user_information_list = []
+            for donator in donator_queryset:
+                name = f'{donator.user.extra_data["username"]}#' \
+                       f'{donator.user.extra_data["discriminator"]}'
+                balance = donator.balance
+                paid = donator.paid
+                accepted = Donation.objects.filter(donator=donator, completed=True).aggregate(Sum('amount'))[
+                    'amount__sum']
+                pending = Donation.objects.filter(donator=donator, completed=False).aggregate(Sum('amount'))[
+                    'amount__sum']
+                last_payment = donator.last_payment
+                first_payment = donator.first_payment
+                monthly_paid = donator.monthly_paid
+                days_until_payment = donator.days_until_payment
+                autopay = donator.autopay
+                precious = donator.precious
+                user_information = {'name': name,
+                                    'balance': balance, 'paid': paid,
+                                'accepted':      accepted if accepted is not None else 0,
+                                'pending':       pending if pending is not None else 0,
+                                'last_payment':  last_payment, 'first_payment': first_payment,
+                                'monthly_paid':  monthly_paid, 'days_until_payment': days_until_payment,
+                                'settings_form': settings_form,
+                                'autopay':       autopay,
+                                'precious':      precious
+                                }
+                user_information_list.append(user_information)
+            context = {'user_information': user_information_list}
         else:
             social_accounts = SocialAccount.objects.get(user=request.user)
             if social_accounts.provider == 'discord':

@@ -16,3 +16,7 @@ body {
 .donationtable{
   padding-bottom: 30px;
 }
+
+.usercard{
+  border-width: 3px;
+}
