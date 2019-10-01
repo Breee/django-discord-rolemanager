@@ -14,16 +14,13 @@ def index(request):
     settings_form = SettingsForm()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
+        print(request.POST)
         form = SettingsForm(request.POST or None)
         if form.is_valid():
-            if "autopay" in request.POST and request.POST["autopay"]:
-                try:
-                    social_accounts = SocialAccount.objects.get(user=request.user)
-                    donator = Donator.objects.get(user=social_accounts)
-                    donator.autopay = True
-                    donator.save()
-                except Donator.DoesNotExist or SocialAccount.DoesNotExist:
-                    print(f"Donator for {request.user} does not exists.")
+            social_accounts = SocialAccount.objects.get(user=request.user)
+            donator = Donator.objects.get(user=social_accounts)
+            donator.autopay = True if ("autopay" in request.POST and request.POST["autopay"]) else False
+            donator.save()
         return HttpResponseRedirect('/')
     else:
         if request.user.is_superuser:
@@ -120,7 +117,7 @@ def donate(request):
             donator.save()
             donation = Donation(donator=donator, amount=form.cleaned_data['amount'], note=form.cleaned_data['note'])
             donation.save()
-            return HttpResponseRedirect('/donate/')
+        return HttpResponseRedirect('/donate/')
 
     # if a GET (or any other method) we'll create a blank form
     else:
