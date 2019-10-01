@@ -8,96 +8,112 @@
 
 {% block content %}
 
-{# Main Section #}
-<div class="container overview">
-    <div class="row justify-content-center">
-        {% if request.user.is_superuser %}
-        <div class="card-columns">
-            {% for user in user_information %}
-            <div class="card {% if user.pending == 0 %} border-success {% else %} border-danger {% endif%} mb-3 usercard">
+    {# Main Section #}
+    <div class="container overview">
+        <div class="row justify-content-center">
+            {% if request.user.is_superuser %}
+                <div class="card-columns">
+                    {% for user in user_information %}
+                        <div class="card {% if user.pending == 0 %} border-success {% else %} border-danger {% endif %} mb-3 usercard">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ user.name }}
+                                </h5>
+                                <p class="card-text {% if user.pending == 0 %} text-success {% else %} text-danger {% endif %}">
+                                <ul class="list-group">
+                                    <li class="list-group-item">Bilanz: {{ user.balance }}€</li>
+                                    <li class="list-group-item">Bestätigte Spenden: {{ user.accepted }}€</li>
+                                    <li class="list-group-item">Noch nicht bestätigte Spenden: {{ user.pending }}€</li>
+                                    <li class="list-group-item">Bisher Abgebucht: {{ user.paid }}€</li>
+                                    <li class="list-group-item">Letzte Abbuchung: {{ user.last_payment }}</li>
+                                    <li class="list-group-item">Tage bis zur nächsten
+                                        Abbuchung:{{ user.days_until_payment }}
+                                    </li>
+                                </ul>
+                                </p>
+                                <h5 class="card-footer {% if user.pending == 0 %} text-success {% else %} text-danger {% endif %} text-center">
+                                    {% if user.pending == 0 %}
+                                        <i class="fas fa-3x fa-check-circle"></i>
+                                    {% else %}
+                                        <i class="fas fa-3x fa-times-circle"></i>
+                                    {% endif %}
+                                </h5>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card bg-light mb-3 usercard">
+                    <div class="card-header text-center"><h3><i class="fas  fa-binoculars"></i> Übersicht</h3></div>
                     <div class="card-body">
-                        <h5 class="card-title text-center">{{ user.name}}
-                        </h5>
-                        <p class="card-text {% if user.pending == 0 %} text-success {% else %} text-danger {% endif%}">
+                        <p class="card-text">
                         <ul class="list-group">
-                            <li class="list-group-item">Bilanz: {{ user.balance }}€</li>
-                            <li class="list-group-item">Bestätigte Spenden: {{ user.accepted }}€</li>
-                            <li class="list-group-item">Noch nicht bestätigte Spenden: {{ user.pending }}€</li>
-                            <li class="list-group-item">Bisher Abgebucht: {{ user.paid }}€</li>
-                            <li class="list-group-item">Letzte Abbuchung: {{ user.last_payment }}</li>
-                            <li class="list-group-item">Tage bis zur nächsten Abbuchung:{{ user.days_until_payment }}
+                            <li class="list-group-item">Name: {{ user_information.name }}</li>
+                            <li class="list-group-item">Aktuelle Bilanz: {{ user_information.balance }}€</li>
+                            <li class="list-group-item">Bestätigte Spenden: {{ user_information.accepted }}€</li>
+                            <li class="list-group-item">Noch nicht bestätigte Spenden: {{ user_information.pending }}€
+                            </li>
+                            <li class="list-group-item">Bisher Abgebucht: {{ user_information.paid }}€</li>
+                            <li class="list-group-item">Letzte Abbuchung: {{ user_information.last_payment }}</li>
+                            <li class="list-group-item">Tage bis zur nächsten Abbuchung:
+                                {{ user_information.days_until_payment }}
                             </li>
                         </ul>
                         </p>
-                        <h5 class="card-footer {% if user.pending == 0 %} text-success {% else %} text-danger {% endif%} text-center">
-                            {% if user.pending == 0 %}
-                            <i class="fas fa-3x fa-check-circle"></i>
-                            {% else %}
-                            <i class="fas fa-3x fa-times-circle"></i>
-                            {% endif%}
-                        </h5>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <div class="card bg-light mb-3" style="max-width: 40rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Übersicht:</h5>
-                    <p class="card-text">
-                    <ul class="list-group">
-                        <li class="list-group-item">Name: {{ user_information.name }}</li>
-                        <li class="list-group-item">Aktuelle Bilanz: {{ user_information.balance }}€</li>
-                        <li class="list-group-item">Bestätigte Spenden: {{ user_information.accepted }}€</li>
-                        <li class="list-group-item">Noch nicht bestätigte Spenden: {{ user_information.pending }}€</li>
-                        <li class="list-group-item">Bisher Abgebucht: {{ user_information.paid }}€</li>
-                        <li class="list-group-item">Letzte Abbuchung: {{ user_information.last_payment }}</li>
-                        <li class="list-group-item">Tage bis zur nächsten Abbuchung:
-                            {{ user_information.days_until_payment }}
-                        </li>
-                    </ul>
-                    </p>
-                    <div class="card bg-light mb-3 text-center" style="max-width: 40rem;">
+                <div class="card bg-light mb-3 text-center paymentcard">
+                    <div class="card-header text-center"><h3><i class="fas  fa-coins"></i> Spenden</h3></div>
+                    <div class="card-body text-center">
                         {% if user_information.precious %}
-                              <div class="alert alert-success" role="alert">
-                            Du bist etwas ganz besonderes :3 Du hast automatisch Zugriff auf Map/Channel.
-                        </div>
+                            <div class="alert alert-success" role="alert">
+                                Du bist etwas ganz besonderes :3 Du hast automatisch Zugriff auf Map/Channel.
+                            </div>
                         {% elif user_information.monthly_paid %}
-                        <div class="alert alert-success" role="alert">
-                            Du hast für die nächsten 30 Tage bezahlt!
-                        </div>
+                            <div class="alert alert-success" role="alert">
+                                Du hast für die nächsten 30 Tage bezahlt!
+                            </div>
                         {% else %}
-                        <div class="alert alert-danger" role="alert">
-                            Du hast diesen Monat noch nicht bezahlt!
-                        </div>
-                        {% if user_information.balance > 0 %}
-                            <form action="/pay/" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-dark">Für die nächsten 30 Tage bezahlen</button>
-                            </form>
-                        {% endif %}
-                        {% endif %}
-                        {% if not user_information.precious %}
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            {% if user_information.autopay %}
-                            <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay"
-                                                        checked>Automatisch
-                                Bezahlen</label><br>
+                            <div class="alert alert-danger" role="alert">
+                                Du hast diesen Monat noch nicht bezahlt!
+                            </div>
+                            {% if user_information.balance > 0 %}
+                                <form action="/pay/" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success">Für die nächsten 30 Tage bezahlen
+                                    </button>
+                                </form>
                             {% else %}
-                            <label for="autopay"><input type="checkbox" name="autopay" value="autopay" id="autopay">Automatisch
-                                Bezahlen</label><br>
+                                <div class="alert alert-warning" role="alert">
+                                    Du hast momentan kein Guthaben mehr, du musst erst etwas Spenden.
+                                </div>
+                                <form>
+                                    <button class="btn btn-dark" disabled>Für die nächsten 30 Tage bezahlen</button>
+                                </form>
                             {% endif %}
-                            <button type="submit" class="btn btn-dark">Speichern</button>
-                        </form>
                         {% endif %}
-                        <a class="btn btn-dark" href="{% url 'donate' %}">Spenden</a>
+                        <a class="btn btn-dark   donationbutton" href="{% url 'donate' %}">Jetzt Spenden</a>
                     </div>
                 </div>
-            </div>
             {% endif %}
         </div>
+        {% if not user_information.precious and not request.user.is_superuser %}
+            <div class="row justify-content-center">
+                <div class="card bg-light mb-3 settingscard">
+                    <div class="card-header text-center"><h3><i class="fas  fa-cog"></i> Einstellungen</h3></div>
+                    <div class="card-body text-center">
+                        <p class="card-text text-center">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                                <label for="autopay"><input type="checkbox" name="autopay"
+                                                            value="autopay" id="autopay"
+                                                            {% if user_information.autopay %}checked{% endif %}> Automatisch
+                                    Bezahlen</label><br>
+                            <button type="submit" class="btn btn-dark">Speichern</button>
+                        </form>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
-
-
 {% endblock content %}

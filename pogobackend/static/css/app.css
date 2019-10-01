@@ -19,4 +19,21 @@ body {
 
 .usercard{
   border-width: 3px;
+  width: 90%;
+  max-width: 40rem;
+}
+
+.paymentcard{
+  width: 90%;
+  max-width: 40rem;
+
+}
+
+.settingscard{
+  width: 90%;
+  max-width: 40rem;
+}
+
+.btn{
+  width: fit-content;
 }
