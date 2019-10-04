@@ -39,7 +39,7 @@ def update_users(self):
         if users.exists():
             user_ids = users.values_list('user__uid',flat=True)
             user_ids = [x for x in user_ids]
-            Donator.objects.filter(user__uid__in=user_ids).update(last_update=timezone.now(),updated=True)
+            Donator.objects.filter(user__uid__in=user_ids).update(last_update=timezone.now(), updated=True)
             call_command('update_users', *user_ids)
     except RuntimeError as e:
         print(e)
@@ -55,6 +55,11 @@ def subtract_fee(user_id=None, authorized=False):
         call_command('subtract_fee', '--pay', '--days', '--month', '--authorized', f'--user={user_id}')
     else:
         call_command('subtract_fee', '--pay', '--days', '--month')
+
+@app.task(name='subtract_day_and_fee')
+def subtract_day_and_fee():
+    call_command('subtract_day')
+    call_command('subtract_fee', '--pay', '--days', '--month')
 
 @app.task(bind=True)
 def debug_task(self):
