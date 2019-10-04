@@ -21,6 +21,7 @@ def index(request):
             donator = Donator.objects.get(user=social_accounts)
             donator.autopay = True if ("autopay" in request.POST and request.POST["autopay"]) else False
             donator.save()
+            subtract_fee.delay(social_accounts.user_id)
         return HttpResponseRedirect('/')
     else:
         if request.user.is_superuser:
