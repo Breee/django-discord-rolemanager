@@ -9,7 +9,7 @@ from django.dispatch import receiver
 from django.db.models import Sum
 from django.utils import timezone
 from allauth.account.signals import user_signed_up
-from pogobackend.celery import update_user
+from pogobackend.celery import update_user,subtract_fee
 
 # method for updating
 @receiver(post_save, sender=Donation, dispatch_uid="update_donation")
@@ -21,6 +21,8 @@ def update_donation(sender, **kwargs):
     Donator.objects.filter(user=donator.user).update(balance=balance, last_payment=timezone.now(), last_change=timezone.now())
     if donation.completed:
         Donator.objects.filter(user=donator.user).update(updated=False)
+        # Directly pay if possible (Only if autopay is activated)
+        subtract_fee.delay()
 
 @receiver(post_save, sender=Donator, dispatch_uid="update_donator")
 def update_donator(sender, **kwargs):
