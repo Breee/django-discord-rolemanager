@@ -24,3 +24,4 @@ psycopg2-binary
 Celery
 redis
 django-celery-beat
+pika
