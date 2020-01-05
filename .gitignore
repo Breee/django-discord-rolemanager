@@ -28,3 +28,5 @@ pogobackend/donations/management/commands/data/
 pogobackend/celerybeat-schedule
 
 *.pid
+
+venv/
