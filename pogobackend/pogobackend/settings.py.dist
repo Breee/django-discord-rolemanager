@@ -162,3 +162,11 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Berlin'
+
+# RabbitMQ
+RABBITMQ_HOST = 'localhost'
+RABBITMQ_PORT = 5672
+RABBITMQ_USERNAME = 'rabbit'
+RABBITMQ_PASSWORD = 'rabbit'
+RABBITMQ_FEEDBACK_QUEUE = 'pogobackend_feedback_queue'
+RABBITMQ_CONSUMER_QUEUE = 'pogobackend_consumer_queue'
