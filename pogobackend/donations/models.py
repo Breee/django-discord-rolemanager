@@ -23,7 +23,7 @@ class Donator(models.Model):
 class Donation(models.Model):
     donator = models.ForeignKey(Donator, on_delete=models.CASCADE)
     amount = models.FloatField(default=0.0)
-    completed = models.BooleanField(default=False)
+    completed = models.BooleanField(default=True)
     note = models.CharField(max_length=128, default="")
     date = models.DateTimeField(default=now)
     def __str__(self):
