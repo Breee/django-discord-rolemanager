@@ -43,7 +43,7 @@ def update_users(self):
             call_command('update_users', *user_ids)
     except RuntimeError as e:
         print(e)
-        self.retry(countdown=2, exc=e, max_retries=5)@app.task(name='update_users_task', bind=True)
+        self.retry(countdown=2, exc=e, max_retries=5)
 
 @app.task(name='update_users_rabbitmq_task', bind=True)
 def update_users_rabbitmq(self):
