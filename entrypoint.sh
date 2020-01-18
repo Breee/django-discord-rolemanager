@@ -8,6 +8,8 @@ python manage.py collectstatic --noinput
 echo "Apply database migrations"
 python manage.py migrate
 
+# Remove old celerybeat.pid
+rm celerybeat.pid
 # Start Celery.
 celery -A pogobackend worker -l info &
 celery -A pogobackend beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler &
