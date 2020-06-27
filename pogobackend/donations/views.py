@@ -118,7 +118,7 @@ def donate(request):
             donator.save()
             donation = Donation(donator=donator, amount=form.cleaned_data['amount'], note=form.cleaned_data['note'])
             donation.save()
-        return HttpResponseRedirect('/donate/')
+        return HttpResponseRedirect('/')
 
     # if a GET (or any other method) we'll create a blank form
     else:
