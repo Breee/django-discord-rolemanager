@@ -7,7 +7,7 @@ chardet==3.0.4
 defusedxml==0.6.0
 Django==2.2.14
 django-allauth==0.39.1
-idna==2.8
+idna==2.10
 multidict==4.5.2
 oauthlib==3.1.0
 pexpect==4.7.0
