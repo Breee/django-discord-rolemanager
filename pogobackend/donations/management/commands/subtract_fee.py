@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
-from donations.models import Donator
+from donations.models import Donator,Transaction
 from django.utils import timezone
-
 
 class Command(BaseCommand):
     help = 'subtract fee from each donator.'
@@ -31,3 +30,6 @@ class Command(BaseCommand):
                     donator.monthly_paid = True
                 donator.last_payment = timezone.now()
                 donator.save()
+                new_transaction, created = Transaction.objects.create(donator=donator, amount=donator.fee, date=timezone.now())
+                new_transaction.save()
+                

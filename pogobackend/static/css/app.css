@@ -4,7 +4,6 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  padding-top: 65px;
 }
 .content {
   flex: 1 0 auto;
@@ -18,7 +17,6 @@ body {
 }
 
 .usercard{
-  border-width: 3px;
   width: 90%;
   max-width: 40rem;
 }
@@ -37,3 +35,20 @@ body {
 .btn{
   width: fit-content;
 }
+
+.overview{
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+  .navbar-brand.abs
+      {
+          position: absolute;
+          width: auto;
+          left: 50%;
+          transform: translateX(-50%);
+          text-align: center;
+      }
+  }
+  

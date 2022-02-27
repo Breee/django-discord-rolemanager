@@ -1,31 +1,37 @@
 {% load socialaccount %}
 {% block nav %}
-<nav class="navbar navbar-toggelable-md fixed-top navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'home' %}">PogoFR Backend</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'home' %}">Übersicht <span class="sr-only">(current)</span></a>
-                </li>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+      <a class="navbar-brand abs" href="#">PogoFR Donator Backend</a>
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNavbar">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="collapseNavbar">
+          <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'me' %}">Me</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'donate' %}">Donate</a>
+              </li>
+              {% if user.is_superuser %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Overview</a>
+              </li>
+              {% endif %}
+
+          </ul>
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'donate' %}">Spenden</a>
-                </li>
-                {% endif %}
-            </ul>
-            <span class="navbar-text">
-      {% if user.is_authenticated %}
-            <span class="discord_user_name">{{user.username}}</span> | <a href="{% url 'account_logout' %}"><i
-                    class="fas fa-sign-out-alt"></i> Logout</a>
-      {% else %}
-            <a href="{% provider_login_url 'discord' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
-      {% endif %}
-    </span>
-        </div>
-    </div>
+                <span class="discord_user_name">{{user.username}}</span> | <a href="{% url 'account_logout' %}"><i
+                        class="fas fa-sign-out-alt"></i> Logout</a>
+          {% else %}
+                <a href="{% provider_login_url 'discord' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+          {% endif %}
+              </li>
+          </ul>
+      </div>
+  </div>
 </nav>
 {% endblock %}

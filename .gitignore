@@ -30,3 +30,6 @@ pogobackend/celerybeat-schedule
 *.pid
 
 venv/
+volumes/rabbitmq/**
+pogobackend/settings.py
+pogobackend/__pycache__/settings.cpython-38.pyc

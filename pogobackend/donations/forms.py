@@ -7,4 +7,5 @@ class DonateForm(forms.Form):
     note = forms.CharField(label='Note', max_length=128, widget=forms.TextInput(attrs={'class' : 'form-control'}))
 
 class SettingsForm(forms.Form):
-    autopay = forms.BooleanField(label='Autopay', required=False)
+    autopay = forms.BooleanField(label='Jeden Monat automatisch bezahlen', required=False)
+    fee = forms.FloatField(label='Monatliche Zahlung', min_value=4.0, required=True, initial=4.0)

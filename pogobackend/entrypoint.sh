@@ -16,4 +16,9 @@ celery -A pogobackend beat -l info --scheduler django_celery_beat.schedulers:Dat
 
 # Start server
 echo "Starting server"
-gunicorn pogobackend.wsgi:application --bind 0.0.0.0:8000 --workers 3
+if [ "$DEVELOPMENT" == "True" ]
+then
+  python3 manage.py runserver 0.0.0.0:8000
+else
+  gunicorn pogobackend.wsgi:application --bind 0.0.0.0:8000 --workers 3
+fi

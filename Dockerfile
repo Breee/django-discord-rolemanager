@@ -11,7 +11,6 @@ COPY ./pogobackend/requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r /usr/src/app/requirements.txt && pip install gunicorn
 
 COPY pogobackend /usr/src/app
-COPY entrypoint.sh /usr/src/app/entrypoint.sh
 WORKDIR /usr/src/app
 
 RUN apk del buildpack

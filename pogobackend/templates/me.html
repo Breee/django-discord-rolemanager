@@ -1,0 +1,80 @@
+<!-- templates/home.html -->
+
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Home{% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+
+{% block content %}
+    <div class="container">
+    {# Main Section #}
+    <div class="container overview">
+        <div class="row justify-content-center">
+                <div class="card bg-light mb-3 usercard">
+                    <div class="card-header text-center"><h3><i class="fas  fa-binoculars"></i> Overview</h3></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                        <ul class="list-group">
+                            <li class="list-group-item">Name: {{ user_information.name }}</li>
+                            <li class="list-group-item">Bilanz: {{ user_information.balance }}€</li>
+                            <li class="list-group-item">Verbraucht: {{ user_information.paid }}€</li>
+                            <li class="list-group-item">Monatliche Zahlung: {{ user_information.fee }}€</li>
+                            <li class="list-group-item">Nächste Zahlung:
+                                {{ user_information.days_until_payment }}
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+                <div class="card bg-light mb-3 text-center paymentcard">
+                    <div class="card-header text-center"><h3><i class="fas  fa-coins"></i> Spenden</h3></div>
+                    <div class="card-body text-center">
+                        {% if user_information.precious %}
+                            <div class="alert alert-success" role="alert">
+                                Du bist etwas ganz besonderes :3 Du hast automatisch Zugriff auf Map/Channel.
+                            </div>
+                        {% elif user_information.monthly_paid %}
+                            <div class="alert alert-success" role="alert">
+                                Du hast für die nächsten 30 Tage bezahlt.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger" role="alert">
+                                Du hast diesen Monat noch nicht bezahlt!
+                            </div>
+                            {% if user_information.balance >= user_information.fee %}
+                                <form action="/pay/" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success">Für die nächsten 30 Tage bezahlen
+                                    </button>
+                                </form>
+                            {% else %}
+                                <div class="alert alert-warning" role="alert">
+                                    Du hast momentan nichtmehr genug Guthaben, du musst erst etwas Spenden.
+                                </div>
+                                <form>
+                                    <button class="btn btn-dark" disabled>Für die nächsten 30 Tage bezahlen</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                        <a class="btn btn-dark   donationbutton" href="{% url 'donate' %}">Jetzt Spenden</a>
+                    </div>
+                </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="card bg-light mb-3 settingscard">
+                <div class="card-header text-center"><h3><i class="fas  fa-cog"></i> Einstellungen</h3></div>
+                <div class="card-body text-left">
+                    <p class="card-text text-left">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ user_information.settings_form.as_p}}
+                        <button type="submit" class="btn btn-dark">Speichern</button>
+                    </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

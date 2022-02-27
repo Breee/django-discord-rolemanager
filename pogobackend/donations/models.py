@@ -20,6 +20,7 @@ class Donator(models.Model):
     def __str__(self):
         return f"{self.user.extra_data['username']}#{self.user.extra_data['discriminator']} - {self.balance}"
 
+
 class Donation(models.Model):
     donator = models.ForeignKey(Donator, on_delete=models.CASCADE)
     amount = models.FloatField(default=0.0)
@@ -28,6 +29,14 @@ class Donation(models.Model):
     date = models.DateTimeField(default=now)
     def __str__(self):
         return f"{self.donator.user.extra_data['username']}#{self.donator.user.extra_data['discriminator']} [amount: {self.amount}] [completed: {self.completed}]"
+
+class Transaction(models.Model):
+    donator = models.ForeignKey(Donator, on_delete=models.CASCADE)
+    amount = models.FloatField(default=0.0)
+    date = models.DateTimeField(default=None)
+    
+    def __str__(self):
+        return f"{self.donator.user.extra_data['username']}#{self.donator.user.extra_data['discriminator']} [amount: {self.amount}] [{self.date}]"
 
 class RawDonation(models.Model):
     username = models.CharField(max_length=128)
