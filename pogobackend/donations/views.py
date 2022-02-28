@@ -54,7 +54,7 @@ def index(request):
                     transactions = transactions.aggregate(Sum('amount'))['amount__sum']
                     total["users"] += 1
                     total["transactions"] += transactions  if transactions is not None else 0
-                total["devices"] = total["transactions"] / 3.0
+                total["devices"] = total["transactions"] / 4.0
             
             context = {'user_information': user_information_list, 'total': total}
         return render(request, 'home.html', context)
