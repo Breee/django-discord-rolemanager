@@ -8,8 +8,7 @@ class Command(BaseCommand):
     help = 'prepare users for new backend'
 
     def handle(self, *args, **kwargs):
-        Donator.objects.all().update(balance=0.0,
-                                     paid=0.0,
+        Donator.objects.all().update(paid=0.0,
                                      fee=4.0,
                                      precious=False,
                                      monthly_paid=False,

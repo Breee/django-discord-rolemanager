@@ -23,7 +23,7 @@ urlpatterns = [
     path('', views.me if not MAINTENANCE else views.post_login , name='me'),
     path('me/', views.me if not MAINTENANCE else views.post_login , name='me'),
     path('overview', views.index if not MAINTENANCE else views.post_login , name='home'),
-    path('donate/', views.donate, name='donate'),
-    path('pay/', views.pay, name='pay'),
+    path('donate/', views.donate if not MAINTENANCE else views.post_login, name='donate'),
+    path('pay/', views.pay if not MAINTENANCE else views.post_login, name='pay'),
 ]
 
