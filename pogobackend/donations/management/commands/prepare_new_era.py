@@ -12,7 +12,7 @@ class Command(BaseCommand):
                                      fee=4.0,
                                      precious=False,
                                      monthly_paid=False,
-                                     autopay=True,
+                                     autopay=False,
                                      days_until_payment=0,
                                      updated=False,
                                      )
