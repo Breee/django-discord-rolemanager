@@ -1,68 +1,68 @@
 <!-- templates/home.html -->
-
 {% extends 'base.html' %}
 {% load staticfiles %}
-
-{% block title %}Home{% endblock title %}
-{% block nav-style %}mkt-nav{% endblock nav-style %}
-
+{% block title %}
+    Home
+{% endblock title %}
+{% block nav-style %}
+    mkt-nav
+{% endblock nav-style %}
 {% block content %}
     <div class="container">
-    {# Main Section #}
-    <div class="container overview">
-        <div class="row justify-content-center"> 
-            <div class="table-responsive">
-                <table id="overview-table" class="table table-hover">
-                    <thead>
-                        <tr>
-                          <th scope="col">Acive Users</th>
-                          <th scope="col">Current Balance</th>
-                          <th scope="col">Current Monthly payments</th>
-                          <th scope="col">Estimated Devices available</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                               <th scope="row">{{ total.users }}</th>
+        {# Main Section #}
+        <div class="container overview">
+            <div class="row justify-content-center">
+                <div class="table-responsive">
+                    <table id="overview-table" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Acive Users</th>
+                                <th scope="col">Current Balance</th>
+                                <th scope="col">Current Monthly payments</th>
+                                <th scope="col">Estimated Devices available</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">{{ total.users }}</th>
                                 <td>{{ total.balance }}€</td>
                                 <td>{{ total.transactions }}€</td>
                                 <td>{{ total.devices }}</td>
-                        </tr>
-                      </tbody>
-                </table>
-              </div>
-        </div>
-        <div class="row justify-content-center">
-
-            <div class="table-responsive">
-                <table id="donators" class="table table-hover">
-                    <thead>
-                        <tr>
-                          <th scope="col">User</th>
-                          <th scope="col">Balance</th>
-                          <th scope="col">Accepted</th>
-                          <th scope="col">Not Accepted</th>
-                          <th scope="col">Paid</th>
-                          <th scope="col">Days left</th>
-                          <th scope="col">Precious</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for user in user_information %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="table-responsive">
+                    <table id="donators" class="table table-hover">
+                        <thead>
                             <tr>
-                                <th scope="row">{{ user.name }}</th>
-                                <td>{{ user.balance }}€</td>
-                                <td>{{ user.accepted }}€</td>
-                                <td>{{ user.pending }}€</td>
-                                <td>{{ user.paid }}€</td>
-                                <td>{{ user.days_until_payment }}</td>
-                                <td>{{ user.precious }}</td>
-                              </tr>
-                    {% endfor %}
-                      </tbody>
-                </table>
-              </div>             
+                                <th scope="col">User</th>
+                                <th scope="col">Balance</th>
+                                <th scope="col">Accepted</th>
+                                <th scope="col">Not Accepted</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Days left</th>
+                                <th scope="col">Precious</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in user_information %}
+                                <tr>
+                                    <th scope="row">{{ user.name }}</th>
+                                    <td>{{ user.balance }}€</td>
+                                    <td>{{ user.accepted }}€</td>
+                                    <td>{{ user.pending }}€</td>
+                                    <td>{{ user.paid }}€</td>
+                                    <td>{{ user.days_until_payment }}</td>
+                                    <td>{{ user.precious }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 {% endblock content %}

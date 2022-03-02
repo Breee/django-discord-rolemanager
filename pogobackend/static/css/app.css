@@ -52,3 +52,16 @@ body {
       }
   }
   
+i.fas.fa-check-circle {
+    font-size: 25;
+    color: limegreen;
+}
+
+i.fas.fa-times-circle{
+  font-size: 25;
+  color: #f7041c;
+}
+
+.donation-container{
+  padding-top: 15px;
+}

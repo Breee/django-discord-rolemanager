@@ -6,4 +6,12 @@ $(document).ready(function () {
         "info":     true
         }
     );
+    $('#donations').DataTable(
+        {
+         "paging":   false,
+        "ordering": true,
+        "info":     false,
+         "searching": false
+        }
+    );
 });
