@@ -137,7 +137,7 @@ def donate(request):
             social_account = SocialAccount.objects.get(user=request.user)
             donator, created = Donator.objects.update_or_create(user=social_account)
             donator.save()
-            donation = Donation(donator=donator, amount=form.cleaned_data['amount'], note=form.cleaned_data['note'])
+            donation = Donation(donator=donator, amount=form.cleaned_data['amount'], note=form.cleaned_data['note'], completed=False)
             donation.save()
         return HttpResponseRedirect('/me')
 
