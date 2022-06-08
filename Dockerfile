@@ -4,7 +4,7 @@ LABEL maintainer="Breee@github"
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE pogobackend.settings
 
-RUN apk --no-cache update && apk --no-cache upgrade && apk --no-cache add --virtual buildpack gcc musl-dev build-base
+RUN apk --no-cache update && apk --no-cache upgrade && apk --no-cache add --virtual buildpack gcc musl-dev libffi-dev build-base 
 RUN apk --no-cache update && apk --no-cache add git postgresql-dev zlib-dev jpeg-dev tzdata binutils libc-dev
 
 COPY ./pogobackend/requirements.txt /usr/src/app/requirements.txt
