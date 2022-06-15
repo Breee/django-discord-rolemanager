@@ -37,6 +37,9 @@ def index(request):
                 days_until_payment = donator.days_until_payment
                 autopay = donator.autopay
                 precious = donator.precious
+                fee = donator.fee
+                transactions_sum = Transaction.objects.filter(donator=donator, date__range=[last_payment, timezone.now()])
+                transactions_sum = transactions_sum.aggregate(Sum('amount'))['amount__sum']
                 user_information = {'name': name,
                                     'balance': balance, 'paid': paid,
                                 'accepted':      accepted if accepted is not None else 0,
@@ -45,7 +48,9 @@ def index(request):
                                 'monthly_paid':  monthly_paid, 'days_until_payment': days_until_payment,
                                 'settings_form': settings_form,
                                 'autopay':       autopay,
-                                'precious':      precious
+                                'precious':      precious,
+                                'fee':      fee,
+                                'transactions_sum': transactions_sum  if transactions_sum is not None else 0
                                 }
                 user_information_list.append(user_information)
                 total["balance"] += balance
@@ -54,7 +59,8 @@ def index(request):
                     transactions = transactions.aggregate(Sum('amount'))['amount__sum']
                     total["users"] += 1
                     total["transactions"] += transactions  if transactions is not None else 0
-                total["devices"] = total["transactions"] / 12.0
+            
+            total["area"] = (total["transactions"] / 4) * 600
             
             context = {'user_information': user_information_list, 'total': total}
         return render(request, 'home.html', context)

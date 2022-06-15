@@ -18,7 +18,7 @@
                                 <th scope="col">Acive Users</th>
                                 <th scope="col">Current Balance</th>
                                 <th scope="col">Current Monthly payments</th>
-                                <th scope="col">Estimated Devices available</th>
+                                <th scope="col">Estimated area</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,7 +26,7 @@
                                 <th scope="row">{{ total.users }}</th>
                                 <td>{{ total.balance }}€</td>
                                 <td>{{ total.transactions }}€</td>
-                                <td>{{ total.devices }}</td>
+                                <td>{{ total.area }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -42,6 +42,8 @@
                                 <th scope="col">Accepted</th>
                                 <th scope="col">Not Accepted</th>
                                 <th scope="col">Paid</th>
+                                <th scope="col">Fee</th>
+                                <th scope="col">trx sum</th>
                                 <th scope="col">Days left</th>
                                 <th scope="col">Precious</th>
                             </tr>
@@ -54,6 +56,8 @@
                                     <td>{{ user.accepted }}€</td>
                                     <td>{{ user.pending }}€</td>
                                     <td>{{ user.paid }}€</td>
+                                    <td>{{ user.fee }}€</td>
+                                    <td>{{ user.transactions_sum }}€</td>
                                     <td>{{ user.days_until_payment }}</td>
                                     <td>{{ user.precious }}</td>
                                 </tr>
