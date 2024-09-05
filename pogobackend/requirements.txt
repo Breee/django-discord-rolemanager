@@ -1,6 +1,6 @@
 discord.py==2.4.0
 Django==4.1.10
-django-allauth==0.43.0
+django-allauth==64.2.1
 psycopg2-binary
 Celery
 redis
